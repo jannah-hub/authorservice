@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
-use App\BookModel;
+use App\AuthorModel;
 use App\Model;
 use DB;
 
-class BookController extends Controller
+class AuthorController extends Controller
 {
     use ApiResponser;
     private $request;
@@ -22,20 +22,21 @@ class BookController extends Controller
     }
 
 
-    public function getBooks()
+    public function getAuthors()
     {
-        $books =  DB::connection('mysql')
-        ->select("Select * from tblbooks");
+        $authors =  DB::connection('mysql')
+        ->select("Select * from tblauthors");
 
-        return $this->successResponse($books);
+        return $this->successResponse($authors);
     }
 
 
     public function index()
     {
-        $books = BookModel::all();
+        $authors = AuthorModel
+    ::all();
 
-        return $this->successResponse($books);
+        return $this->successResponse($authors);
     }
 
 
@@ -43,16 +44,19 @@ class BookController extends Controller
     {
         $rules = [
 
-            'bookname' => 'required|max:20',
-            'yearpublish' => 'required|numeric|min:1|not_in:0',
+            'fullname' => 'required|max:20',
+            'gender' => 'required|in:Male,Female',
+            'birthday' => 'required|date|date_format:Y-m-d',
+            //'yearpublish' => 'required|numeric|min:1|not_in:0',
             //'gender' => 'required|in:Male,Female',
 
         ];
 
 
         $this->validate($request, $rules);
-        $books = BookModel::create($request->all());
-        return $this->successResponse($books, Response::HTTP_CREATED);
+        $authors = AuthorModel
+    ::create($request->all());
+        return $this->successResponse($authors, Response::HTTP_CREATED);
     }
 
     /**
@@ -63,9 +67,10 @@ class BookController extends Controller
 
     public function show($id)
     {
-        $books = BookModel::where('id', $id)->first();
-        if($books){
-            return $this->successResponse($books);
+        $authors = AuthorModel
+    ::where('author_id', $id)->first();
+        if($authors){
+            return $this->successResponse($authors);
         }
     
         {
@@ -87,19 +92,21 @@ class BookController extends Controller
 
             'bookname' => 'max:20',
             'yearpublish' => 'numeric|min:1|not_in:0',
+            'birthday' => 'date|date_format:Y-m-d',
             //'gender' => 'in:Male,Female',
 
         ];
 
         $this->validate($request, $rules);
 
-        $books = BookModel::findOrFail($id);
+        $authors = AuthorModel
+    ::findOrFail($id);
 
-        $books->fill($request->all());
+        $authors->fill($request->all());
         
-        $books->save();
-        if($books){
-            return $this->successResponse($books);
+        $authors->save();
+        if($authors){
+            return $this->successResponse($authors);
         }
     
         {
@@ -110,10 +117,11 @@ class BookController extends Controller
 
     public function delete($id)
     {
-        $books = BookModel::where('id', $id)->first();
-        if($books){
-            $books->delete();
-            return $this->successResponse($books);
+        $authors = AuthorModel
+    ::where('author_id', $id)->first();
+        if($authors){
+            $authors->delete();
+            return $this->successResponse($authors);
         }
     
         {

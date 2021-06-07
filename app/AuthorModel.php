@@ -12,6 +12,7 @@ class AuthorModel extends Model  {
 
  protected $fillable = [ 'fullname', 'gender', 'birthday' ];
 
- protected $primaryKey = 'author_id';
+ public $timestamps = false;
+ protected $primaryKey = 'id';
 
 }

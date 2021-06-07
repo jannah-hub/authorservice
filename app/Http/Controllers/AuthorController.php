@@ -33,8 +33,7 @@ class AuthorController extends Controller
 
     public function index()
     {
-        $authors = AuthorModel
-    ::all();
+        $authors = AuthorModel::all();
 
         return $this->successResponse($authors);
     }
@@ -46,7 +45,7 @@ class AuthorController extends Controller
 
             'fullname' => 'required|max:20',
             'gender' => 'required|in:Male,Female',
-            'birthday' => 'required|date|date_format:Y-m-d',
+            'birthday' => 'required|date|date_format:Y-m-d',    
             //'yearpublish' => 'required|numeric|min:1|not_in:0',
             //'gender' => 'required|in:Male,Female',
 
@@ -68,7 +67,7 @@ class AuthorController extends Controller
     public function show($id)
     {
         $authors = AuthorModel
-    ::where('author_id', $id)->first();
+    ::where('id', $id)->first();
         if($authors){
             return $this->successResponse($authors);
         }
@@ -90,17 +89,16 @@ class AuthorController extends Controller
 
         $rules = [
 
-            'bookname' => 'max:20',
-            'yearpublish' => 'numeric|min:1|not_in:0',
-            'birthday' => 'date|date_format:Y-m-d',
+            'fullname' => 'max:20',
+            'gender' => 'required|in:Male,Female',
+            'birthday' => 'required|date|date_format:Y-m-d',
             //'gender' => 'in:Male,Female',
 
         ];
 
         $this->validate($request, $rules);
 
-        $authors = AuthorModel
-    ::findOrFail($id);
+        $authors = AuthorModel::findOrFail($id);
 
         $authors->fill($request->all());
         
@@ -117,8 +115,7 @@ class AuthorController extends Controller
 
     public function delete($id)
     {
-        $authors = AuthorModel
-    ::where('author_id', $id)->first();
+        $authors = AuthorModel::where('id', $id)->first();
         if($authors){
             $authors->delete();
             return $this->successResponse($authors);

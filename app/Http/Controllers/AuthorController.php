@@ -43,11 +43,11 @@ class AuthorController extends Controller
     {
         $rules = [
 
+            
             'fullname' => 'required|max:20',
             'gender' => 'required|in:Male,Female',
             'birthday' => 'required|date|date_format:Y-m-d',    
-            //'yearpublish' => 'required|numeric|min:1|not_in:0',
-            //'gender' => 'required|in:Male,Female',
+        
 
         ];
 
@@ -73,7 +73,7 @@ class AuthorController extends Controller
         }
     
         {
-            return $this->errorResponse('Book ID Does Not Exist', Response::HTTP_NOT_FOUND);
+            return $this->errorResponse('Author ID Does Not Exist', Response::HTTP_NOT_FOUND);
 
         }
 
@@ -89,10 +89,11 @@ class AuthorController extends Controller
 
         $rules = [
 
+            
             'fullname' => 'max:20',
-            'gender' => 'required|in:Male,Female',
-            'birthday' => 'required|date|date_format:Y-m-d',
-            //'gender' => 'in:Male,Female',
+            'gender' => 'in:Male,Female',
+            'birthday' => 'date|date_format:Y-m-d',
+            
 
         ];
 
@@ -100,7 +101,20 @@ class AuthorController extends Controller
 
         $authors = AuthorModel::findOrFail($id);
 
-        $authors->fill($request->all());
+        if ($authors){
+
+            $authors->fill($request->all());
+
+            // if no changes happen
+            if ($authors->isClean()) {
+                return $this->errorResponse('At least one value must change', 
+                Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+            $authors->save();
+            return $this->successResponse($authors);
+        }
+
+        /*$authors->fill($request->all());
         
         $authors->save();
         if($authors){
@@ -110,7 +124,7 @@ class AuthorController extends Controller
         {
             return $this->errorResponse('Book ID Does Not Exist', Response::HTTP_NOT_FOUND);
 
-        }
+        }*/
     }
 
     public function delete($id)
@@ -122,7 +136,7 @@ class AuthorController extends Controller
         }
     
         {
-            return $this->errorResponse('Book ID Does Not Exist', Response::HTTP_NOT_FOUND);
+            return $this->errorResponse('Author ID Does Not Exist', Response::HTTP_NOT_FOUND);
 
         }
 

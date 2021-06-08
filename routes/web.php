@@ -22,11 +22,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 });
 
  // more simple routes
- $router->get('/authors', 'AuthorController@index'); //get all authors record
- $router->post('/authors', 'AuthorController@add'); //create new authors record
- $router->get('/authors/{id}', 'AuthorController@show'); //get new authors by id record
- $router->put('/authors/{id}', 'AuthorController@update'); //update author record
- $router->patch('/authors/{id}', 'AuthorController@update'); //update author record
- $router->delete('/authors/{id}', 'AuthorController@delete'); //delete record
+ $router->get('/authors', 'AuthorController@index'); //Get all authors
+ $router->post('/authors', 'AuthorController@add'); //Create a new authors
+ $router->get('/authors/{id}', 'AuthorController@show'); //Get the author info based on author id
+ $router->put('/authors/{id}', 'AuthorController@update'); //Update author record based on author id
+ //$router->patch('/authors/{id}', 'AuthorController@update'); //update author record
+ $router->delete('/authors/{id}', 'AuthorController@delete'); //Delete author record based on author id
 
 ?>
